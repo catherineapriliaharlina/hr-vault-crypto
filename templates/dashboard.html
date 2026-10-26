@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - HR Vault</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background: #f4f7f6; color: #333; }
+        .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        h2 { color: #0056b3; margin: 0; }
+        .btn-logout { background: #dc3545; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        select, input[type="file"] { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #004085; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+        th { background-color: #f2f2f2; }
+        a.btn-download { background: #28a745; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>HR Vault - Dashboard Karyawan</h2>
+            <a class="btn-logout" href="/logout">Logout</a>
+        </div>
+        <p>Sistem pengamanan dokumen rahasia (KTP, Dokumen Perkantoran, Video Interview) dengan <b>AES, DES, dan RC4</b>.</p>
+        <hr>
+
+        <h3>Upload & Enkripsi Dokumen Baru</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Pilih File (KTP / PDF / Video):</label>
+                <input type="file" name="file" required>
+            </div>
+            <div class="form-group">
+                <label>Pilih Algoritma Cipher:</label>
+                <select name="cipher">
+                    <option value="aes">AES (Advanced Encryption Standard - Mode CBC)</option>
+                    <option value="des">DES (Data Encryption Standard - Mode CBC)</option>
+                    <option value="rc4">RC4 (Rivest Cipher 4 - Stream Cipher)</option>
+                </select>
+            </div>
+            <button type="submit">Upload & Enkripsi</button>
+        </form>
+
+        <hr>
+        <h3>Daftar File Terenkripsi</h3>
+        <ul>
+            {% if files %}
+                {% for file in files %}
+                    <li>
+                        <span>{{ file }}</span> &nbsp;|&nbsp;
+                        <a class="btn-download" href="/decrypt/{{ file }}">Dekripsi & Download</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>Belum ada file terenkripsi.</p>
+            {% endif %}
+        </ul>
+
+        <hr>
+        <h3>Tabel Benchmark Perbandingan Kinerja Cipher</h3>
+        <p style="font-size: 13px; color: #666;">Data ini mengukur waktu eksekusi enkripsi nyata berdasarkan ukuran file dan jenis cipher yang digunakan (untuk analisis laporan).</p>
+        <table>
+            <tr>
+                <th>Nama File</th>
+                <th>Ukuran (Bytes)</th>
+                <th>Cipher</th>
+                <th>Waktu Enkripsi (Detik)</th>
+            </tr>
+            {% if logs %}
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.filename }}</td>
+                    <td>{{ log.size }}</td>
+                    <td><b>{{ log.cipher }}</b></td>
+                    <td>{{ log.time }} detik</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center;">Belum ada data benchmark. Lakukan upload file terlebih dahulu.</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</body>
+</html>
