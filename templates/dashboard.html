@@ -2,90 +2,420 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - HR Vault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HR Vault Portal</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; background: #f4f7f6; color: #333; }
-        .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; }
-        h2 { color: #0056b3; margin: 0; }
-        .btn-logout { background: #dc3545; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        select, input[type="file"] { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
-        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #004085; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
-        th { background-color: #f2f2f2; }
-        a.btn-download { background: #28a745; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 13px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #f5f6fa; color: #333; }
+
+        /* Top Header ala MyUT x Shopee */
+        .topbar {
+            background: linear-gradient(90deg, #003366 0%, #0056b3 100%);
+            color: white;
+            padding: 14px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 14px; }
+        .logo-badge {
+            background: #ffd700;
+            color: #003366;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .topbar-title h1 { font-size: 18px; font-weight: 700; }
+        .topbar-title p { font-size: 11px; color: #cce0ff; }
+        
+        .topbar-right { display: flex; align-items: center; gap: 16px; }
+        .user-pill {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-logout {
+            background: #ee4d2d;
+            color: white;
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-logout:hover { background: #d73211; }
+
+        /* Banner Info */
+        .sub-banner {
+            background: #fff8e6;
+            border-bottom: 1px solid #ffe58f;
+            padding: 10px 32px;
+            font-size: 13px;
+            color: #874d00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Main Grid Container */
+        .container {
+            max-width: 1150px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+        .full-width { grid-column: 1 / -1; }
+
+        /* Card Styling */
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-top: 4px solid #0056b3;
+        }
+        .card.accent-orange { border-top-color: #ee4d2d; }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .card-header h3 { font-size: 16px; color: #003366; font-weight: 700; }
+        .step-tag {
+            background: #e6f4ff;
+            color: #0056b3;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .step-tag.orange { background: #fff2e8; color: #ee4d2d; }
+
+        /* Form Inputs */
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; }
+        select, input[type="file"], input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 13px;
+            background: #fafafa;
+        }
+        select:focus, input:focus { outline: none; border-color: #0056b3; background: #fff; }
+
+        /* Buttons ala Shopee x MyUT */
+        .btn-primary {
+            background: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+        }
+        .btn-primary:hover { background: #d73211; }
+
+        .btn-blue {
+            background: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+        }
+        .btn-blue:hover { background: #003d80; }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-approve:hover { background: #218838; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th {
+            background: #f0f5ff;
+            color: #003366;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid #d6e4ff;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .status-pending { background: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
+        .status-approved { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+
+        .key-copy-box {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .key-copy-box input {
+            font-family: monospace;
+            font-size: 11px;
+            background: #f6ffed;
+            border: 1px solid #b7eb8f;
+            color: #135200;
+            padding: 6px 8px;
+        }
+        .btn-copy {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 0 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-copy:hover { background: #0056b3; }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h2>HR Vault - Dashboard Karyawan</h2>
-            <a class="btn-logout" href="/logout">Logout</a>
+
+    <!-- TOP NAVBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="logo-badge">HRV</div>
+            <div class="topbar-title">
+                <h1>HR VAULT — KEY MANAGEMENT</h1>
+                <p>Asymmetric RSA-2048 & Symmetric AES-CBC Vault</p>
+            </div>
         </div>
-        <p>Sistem pengamanan dokumen rahasia (KTP, Dokumen Perkantoran, Video Interview) dengan <b>AES, DES, dan RC4</b>.</p>
-        <hr>
-
-        <h3>Upload & Enkripsi Dokumen Baru</h3>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Pilih File (KTP / PDF / Video):</label>
-                <input type="file" name="file" required>
-            </div>
-            <div class="form-group">
-                <label>Pilih Algoritma Cipher:</label>
-                <select name="cipher">
-                    <option value="aes">AES (Advanced Encryption Standard - Mode CBC)</option>
-                    <option value="des">DES (Data Encryption Standard - Mode CBC)</option>
-                    <option value="rc4">RC4 (Rivest Cipher 4 - Stream Cipher)</option>
-                </select>
-            </div>
-            <button type="submit">Upload & Enkripsi</button>
-        </form>
-
-        <hr>
-        <h3>Daftar File Terenkripsi</h3>
-        <ul>
-            {% if files %}
-                {% for file in files %}
-                    <li>
-                        <span>{{ file }}</span> &nbsp;|&nbsp;
-                        <a class="btn-download" href="/decrypt/{{ file }}">Dekripsi & Download</a>
-                    </li>
-                {% endfor %}
-            {% else %}
-                <p>Belum ada file terenkripsi.</p>
-            {% endif %}
-        </ul>
-
-        <hr>
-        <h3>Tabel Benchmark Perbandingan Kinerja Cipher</h3>
-        <p style="font-size: 13px; color: #666;">Data ini mengukur waktu eksekusi enkripsi nyata berdasarkan ukuran file dan jenis cipher yang digunakan (untuk analisis laporan).</p>
-        <table>
-            <tr>
-                <th>Nama File</th>
-                <th>Ukuran (Bytes)</th>
-                <th>Cipher</th>
-                <th>Waktu Enkripsi (Detik)</th>
-            </tr>
-            {% if logs %}
-                {% for log in logs %}
-                <tr>
-                    <td>{{ log.filename }}</td>
-                    <td>{{ log.size }}</td>
-                    <td><b>{{ log.cipher }}</b></td>
-                    <td>{{ log.time }} detik</td>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="4" style="text-align: center;">Belum ada data benchmark. Lakukan upload file terlebih dahulu.</td>
-                </tr>
-            {% endif %}
-        </table>
+        <div class="topbar-right">
+            <div class="user-pill">👤 User Aktif: <b>{{ current_user | upper }}</b></div>
+            <a href="/logout" class="btn-logout">Keluar</a>
+        </div>
     </div>
+
+    <!-- INFO BAR -->
+    <div class="sub-banner">
+        <span>🛡️ <b>Status Keamanan:</b> Pasangan Kunci RSA (Public & Private Key) aktif di memori sesi untuk <b>{{ current_user | upper }}</b>.</span>
+        <span>Total File Terenkripsi: <b>{{ files | length }} File</b></span>
+    </div>
+
+    <!-- MAIN DASHBOARD GRID -->
+    <div class="container">
+
+        <!-- CARD 1: UPLOAD & ENKRIPSI -->
+        <div class="card">
+            <div class="card-header">
+                <h3>1. Upload & Enkripsi Dokumen</h3>
+                <span class="step-tag">AES-CBC</span>
+            </div>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Pilih File Rahasia (KTP / Kontrak PDF / Gambar):</label>
+                    <input type="file" name="file" required>
+                </div>
+                <button type="submit" class="btn-blue">🔒 Upload & Enkripsi dengan Kunci Simetris</button>
+            </form>
+        </div>
+
+        <!-- CARD 2: REQUEST DATA -->
+        <div class="card accent-orange">
+            <div class="card-header">
+                <h3>2. Request Akses Data User Lain</h3>
+                <span class="step-tag orange">REQUEST</span>
+            </div>
+            <form action="/request_data" method="POST">
+                <div class="form-group">
+                    <label>Pilih Pemilik Data yang Ingin Diakses:</label>
+                    <select name="target_user" required>
+                        {% for u in other_users %}
+                            <option value="{{ u }}">Departemen / User: {{ u | upper }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">📩 Kirim Permintaan Akses Data</button>
+            </form>
+        </div>
+
+        <!-- CARD 3: KELOLA PERMINTAAN & DISTRIBUSI KUNCI -->
+        <div class="card full-width">
+            <div class="card-header">
+                <h3>3. Kotak Masuk Permintaan & Distribusi Kunci (Enkripsi Asimetris RSA)</h3>
+                <span class="step-tag">RSA PUBLIC KEY ENCRYPTION</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Peminta</th>
+                        <th style="width: 15%;">Status</th>
+                        <th>Aksi & Kunci Simetris Terenkripsi (Siap Kirim via WA / Email)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set ns = namespace(found=false) %}
+                    {% for req in shared_requests %}
+                        {% if req.target == current_user %}
+                        {% set ns.found = true %}
+                        <tr>
+                            <td><b>👤 {{ req.requester | upper }}</b></td>
+                            <td>
+                                {% if req.status == 'Pending' %}
+                                    <span class="badge-status status-pending">⏳ Menunggu Persetujuan</span>
+                                {% else %}
+                                    <span class="badge-status status-approved">✅ Kunci Terenkripsi</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if req.status == 'Pending' %}
+                                    {% if files %}
+                                        <form action="/share_key/{{ req.requester }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                                            <select name="file_to_share" required style="flex: 1;">
+                                                {% for f in files %}
+                                                    <option value="{{ f }}">{{ f }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="submit" class="btn-approve">🔑 Setujui & Enkripsi Kunci (RSA)</button>
+                                        </form>
+                                    {% else %}
+                                        <span style="color: #cf1322; font-size: 12px;">⚠️ Upload file dulu di Card 1 sebelum menyetujui permintaan!</span>
+                                    {% endif %}
+                                {% else %}
+                                    <div style="font-size: 12px; color: #389e0d; font-weight: 600;">
+                                        File dibagikan: <b>{{ req.filename }}</b> — Salin kunci terenkripsi RSA di bawah ini:
+                                    </div>
+                                    <div class="key-copy-box">
+                                        <input type="text" id="key-{{ loop.index }}" value="{{ req.encrypted_key }}" readonly>
+                                        <button type="button" class="btn-copy" onclick="copyKey('key-{{ loop.index }}')">Salin Kunci</button>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not ns.found %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #888; padding: 20px;">
+                                Belum ada permintaan akses data yang masuk untuk akun <b>{{ current_user | upper }}</b>.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CARD 4: DEKRIPSI FILE BERSAMA -->
+        <div class="card full-width accent-orange">
+            <div class="card-header">
+                <h3>4. Buka & Dekripsi Dokumen Bersama (Menggunakan Private Key RSA Anda)</h3>
+                <span class="step-tag orange">RSA PRIVATE KEY DECRYPTION</span>
+            </div>
+            <form action="/decrypt_shared" method="POST" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 12px; align-items: end;">
+                <div>
+                    <label>Pilih File Terenkripsi (.enc):</label>
+                    <select name="filename" required>
+                        {% if files %}
+                            {% for f in files %}
+                                <option value="{{ f }}">{{ f }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">Belum ada file tersedia</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div>
+                    <label>Tempel (Paste) Kunci Terenkripsi dari Pemilik Data:</label>
+                    <input type="text" name="encrypted_key" placeholder="Paste string Base64 kunci terenkripsi RSA di sini..." required>
+                </div>
+                <div>
+                    <button type="submit" class="btn-primary" style="padding: 10px 22px;">🔓 Dekripsi & Download</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- CARD 5: BENCHMARK LOGS -->
+        <div class="card full-width">
+            <div class="card-header">
+                <h3>5. Log Benchmark Enkripsi Sistem</h3>
+                <span class="step-tag">PERFORMANCE LOG</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama File</th>
+                        <th>Ukuran (Bytes)</th>
+                        <th>Algoritma</th>
+                        <th>Waktu Eksekusi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if logs %}
+                        {% for log in logs %}
+                        <tr>
+                            <td><b>{{ log.filename }}</b></td>
+                            <td>{{ log.size }} bytes</td>
+                            <td><span class="step-tag">{{ log.cipher }}</span></td>
+                            <td>{{ log.time }} detik</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #888;">Belum ada aktivitas enkripsi pada sesi ini.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        function copyKey(inputId) {
+            const copyText = document.getElementById(inputId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("✅ Kunci simetris terenkripsi RSA berhasil disalin! Silakan kirimkan ke peminta atau paste di bagian Dekripsi.");
+        }
+    </script>
+
 </body>
 </html>
