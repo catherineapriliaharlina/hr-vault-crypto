@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - HR Vault Portal</title>
+    <title>Masuk - HR Vault Portal</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body {
@@ -12,7 +12,6 @@
             display: flex;
             flex-direction: column;
         }
-        /* Top Navbar ala MyUT x Shopee */
         .navbar {
             background: #ffffff;
             padding: 15px 40px;
@@ -35,7 +34,6 @@
         .brand-text span { font-size: 12px; color: #ee4d2d; font-weight: 600; }
         .help-link { color: #ee4d2d; text-decoration: none; font-size: 14px; font-weight: 600; }
 
-        /* Main Split Content */
         .main-wrapper {
             flex: 1;
             display: flex;
@@ -59,7 +57,7 @@
             font-weight: 600;
             margin-bottom: 16px;
         }
-        .hero-section h2 { font-size: 36px; line-height: 1.25; margin-bottom: 16px; font-weight: 700; }
+        .hero-section h2 { font-size: 34px; line-height: 1.25; margin-bottom: 16px; font-weight: 700; }
         .hero-section p { font-size: 15px; line-height: 1.6; opacity: 0.9; margin-bottom: 24px; }
         .feature-pills { display: flex; gap: 10px; flex-wrap: wrap; }
         .pill {
@@ -70,7 +68,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* Login Card ala Shopee */
         .login-card {
             background: #ffffff;
             width: 100%;
@@ -149,8 +146,8 @@
         <div class="brand">
             <div class="brand-logo">HRV</div>
             <div class="brand-text">
-                <h1>HR VAULT PORTAL</h1>
-                <span>Enterprise Key Management System</span>
+                <h1>HR VAULT</h1>
+                <span>Sistem Keamanan & Berbagi Dokumen</span>
             </div>
         </div>
         <a href="#" class="help-link">Butuh Bantuan?</a>
@@ -158,19 +155,19 @@
 
     <div class="main-wrapper">
         <div class="hero-section">
-            <div class="hero-badge">🔒 RSA-2048 & AES-CBC SECURED</div>
-            <h2>Pusat Manajemen Kunci & Dokumen Rahasia</h2>
-            <p>Platform terpadu untuk penyimpanan dokumen terenkripsi dan pertukaran kunci simetris berbasis kriptografi kunci publik antar departemen.</p>
+            <div class="hero-badge">🔒 Keamanan Ganda: RSA-2048 & AES-CBC</div>
+            <h2>Simpan Dokumen Rahasia & Bagi Kunci dengan Aman</h2>
+            <p>Platform uji coba buat ngatur file kantor sensitif, enkripsi simetris, dan tukar kunci asimetris antar divisi tanpa takut bocor.</p>
             <div class="feature-pills">
-                <div class="pill">🛡️ Enkripsi File AES</div>
-                <div class="pill">🔑 Distribusi Kunci RSA</div>
-                <div class="pill">📂 Multi-User Access</div>
+                <div class="pill">🛡️ Enkripsi File Cepat (AES)</div>
+                <div class="pill">🔑 Kirim Kunci Aman (RSA)</div>
+                <div class="pill">📂 Multi-User Teruji</div>
             </div>
         </div>
 
         <div class="login-card">
-            <h3>Log In Akun</h3>
-            <p class="subtitle">Masuk menggunakan kredensial departemen Anda</p>
+            <h3>Masuk ke Akun</h3>
+            <p class="subtitle">Silakan login sesuai peran kamu ya</p>
 
             {% if error %}
                 <div class="error-box">⚠️ {{ error }}</div>
@@ -179,28 +176,28 @@
             <form method="POST">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" name="username" placeholder="Masukkan username (cth: hrd)" required>
+                    <input type="text" name="username" placeholder="cth: hrd, manager, atau karyawan" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Masukkan password" required>
+                    <input type="password" name="password" placeholder="Masukkan password kamu" required>
                 </div>
-                <button type="submit" class="btn-login">Log In</button>
+                <button type="submit" class="btn-login">Masuk Sekarang</button>
             </form>
 
             <div class="demo-box">
-                <strong>🔑 Akun Uji Coba (Multi-User):</strong>
+                <strong>💡 Akun Cepat Buat Dicoba:</strong>
                 <ul class="demo-list">
-                    <li>• <b>HRD:</b> <code>hrd</code> / <code>rahasia123</code></li>
-                    <li>• <b>Manager:</b> <code>manager</code> / <code>manager123</code></li>
-                    <li>• <b>Karyawan:</b> <code>karyawan</code> / <code>karyawan123</code></li>
+                    <li>• HRD: <code>hrd</code> / <code>rahasia123</code></li>
+                    <li>• Manager: <code>manager</code> / <code>manager123</code></li>
+                    <li>• Karyawan: <code>karyawan</code> / <code>karyawan123</code></li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        &copy; 2026 HR Vault Security System — Assignment 2: Key Management
+        HR Vault Security System — Dibuat untuk Tugas Manajemen Kunci Kriptografi
     </div>
 
 </body>

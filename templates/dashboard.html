@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - HR Vault Portal</title>
+    <title>Dashboard Utama - HR Vault</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { background: #f5f6fa; color: #333; }
 
-        /* Top Header ala MyUT x Shopee */
         .topbar {
             background: linear-gradient(90deg, #003366 0%, #0056b3 100%);
             color: white;
@@ -53,7 +52,6 @@
         }
         .btn-logout:hover { background: #d73211; }
 
-        /* Banner Info */
         .sub-banner {
             background: #fff8e6;
             border-bottom: 1px solid #ffe58f;
@@ -65,7 +63,6 @@
             align-items: center;
         }
 
-        /* Main Grid Container */
         .container {
             max-width: 1150px;
             margin: 25px auto;
@@ -76,7 +73,6 @@
         }
         .full-width { grid-column: 1 / -1; }
 
-        /* Card Styling */
         .card {
             background: #ffffff;
             border-radius: 10px;
@@ -104,7 +100,6 @@
         }
         .step-tag.orange { background: #fff2e8; color: #ee4d2d; }
 
-        /* Form Inputs */
         .form-group { margin-bottom: 14px; }
         label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; }
         select, input[type="file"], input[type="text"] {
@@ -117,7 +112,6 @@
         }
         select:focus, input:focus { outline: none; border-color: #0056b3; background: #fff; }
 
-        /* Buttons ala Shopee x MyUT */
         .btn-primary {
             background: #ee4d2d;
             color: white;
@@ -159,7 +153,6 @@
         }
         .btn-approve:hover { background: #218838; }
 
-        /* Tables */
         table { width: 100%; border-collapse: collapse; margin-top: 8px; }
         th {
             background: #f0f5ff;
@@ -218,31 +211,28 @@
 </head>
 <body>
 
-    <!-- TOP NAVBAR -->
     <div class="topbar">
         <div class="topbar-left">
             <div class="logo-badge">HRV</div>
             <div class="topbar-title">
-                <h1>HR VAULT — KEY MANAGEMENT</h1>
-                <p>Asymmetric RSA-2048 & Symmetric AES-CBC Vault</p>
+                <h1>HR VAULT DASHBOARD</h1>
+                <p>Manajemen Kunci & Berbagi Berkas Aman</p>
             </div>
         </div>
         <div class="topbar-right">
-            <div class="user-pill">👤 User Aktif: <b>{{ current_user | upper }}</b></div>
+            <div class="user-pill">👤 Masuk sebagai: <b>{{ current_user | upper }}</b></div>
             <a href="/logout" class="btn-logout">Keluar</a>
         </div>
     </div>
 
-    <!-- INFO BAR -->
     <div class="sub-banner">
-        <span>🛡️ <b>Status Keamanan:</b> Pasangan Kunci RSA (Public & Private Key) aktif di memori sesi untuk <b>{{ current_user | upper }}</b>.</span>
-        <span>Total File Terenkripsi: <b>{{ files | length }} File</b></span>
+        <span>💡 <b>Info:</b> Kunci RSA otomatis aktif untuk akun <b>{{ current_user | upper }}</b>. Silakan gunakan fitur di bawah sesuai kebutuhan tugasmu.</span>
+        <span>Total Berkas Teredam (.enc): <b>{{ files | length }} file</b></span>
     </div>
 
-    <!-- MAIN DASHBOARD GRID -->
     <div class="container">
 
-        <!-- CARD 1: UPLOAD & ENKRIPSI -->
+        <!-- CARD 1 -->
         <div class="card">
             <div class="card-header">
                 <h3>1. Upload & Enkripsi Dokumen</h3>
@@ -250,44 +240,44 @@
             </div>
             <form action="/upload" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>Pilih File Rahasia (KTP / Kontrak PDF / Gambar):</label>
+                    <label>Pilih file yang mau diamankan (PDF, KTP, Foto):</label>
                     <input type="file" name="file" required>
                 </div>
-                <button type="submit" class="btn-blue">🔒 Upload & Enkripsi dengan Kunci Simetris</button>
+                <button type="submit" class="btn-blue">🔒 Upload & Enkripsi File</button>
             </form>
         </div>
 
-        <!-- CARD 2: REQUEST DATA -->
+        <!-- CARD 2 -->
         <div class="card accent-orange">
             <div class="card-header">
-                <h3>2. Request Akses Data User Lain</h3>
+                <h3>2. Request Akses File ke Akun Lain</h3>
                 <span class="step-tag orange">REQUEST</span>
             </div>
             <form action="/request_data" method="POST">
                 <div class="form-group">
-                    <label>Pilih Pemilik Data yang Ingin Diakses:</label>
+                    <label>Mau minta akses file dari siapa?</label>
                     <select name="target_user" required>
                         {% for u in other_users %}
-                            <option value="{{ u }}">Departemen / User: {{ u | upper }}</option>
+                            <option value="{{ u }}">User: {{ u | upper }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <button type="submit" class="btn-primary">📩 Kirim Permintaan Akses Data</button>
+                <button type="submit" class="btn-primary">📩 Kirim Permintaan Akses</button>
             </form>
         </div>
 
-        <!-- CARD 3: KELOLA PERMINTAAN & DISTRIBUSI KUNCI -->
+        <!-- CARD 3 -->
         <div class="card full-width">
             <div class="card-header">
-                <h3>3. Kotak Masuk Permintaan & Distribusi Kunci (Enkripsi Asimetris RSA)</h3>
-                <span class="step-tag">RSA PUBLIC KEY ENCRYPTION</span>
+                <h3>3. Permintaan Masuk & Persetujuan Kunci (Asimetris RSA)</h3>
+                <span class="step-tag">RSA PUBLIC KEY</span>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th style="width: 15%;">Peminta</th>
                         <th style="width: 15%;">Status</th>
-                        <th>Aksi & Kunci Simetris Terenkripsi (Siap Kirim via WA / Email)</th>
+                        <th>Aksi Berbagi Kunci Terenkripsi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -299,28 +289,29 @@
                             <td><b>👤 {{ req.requester | upper }}</b></td>
                             <td>
                                 {% if req.status == 'Pending' %}
-                                    <span class="badge-status status-pending">⏳ Menunggu Persetujuan</span>
+                                    <span class="badge-status status-pending">⏳ Belum Disetujui</span>
                                 {% else %}
-                                    <span class="badge-status status-approved">✅ Kunci Terenkripsi</span>
+                                    <span class="badge-status status-approved">✅ Kunci Siap</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if req.status == 'Pending' %}
                                     {% if files %}
-                                        <form action="/share_key/{{ req.requester }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                                        <!-- Perhatikan bagian action di bawah ini sudah menggunakan /{{ loop.index0 }} -->
+                                        <form action="/share_key/{{ req.requester }}/{{ loop.index0 }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
                                             <select name="file_to_share" required style="flex: 1;">
                                                 {% for f in files %}
                                                     <option value="{{ f }}">{{ f }}</option>
                                                 {% endfor %}
                                             </select>
-                                            <button type="submit" class="btn-approve">🔑 Setujui & Enkripsi Kunci (RSA)</button>
+                                            <button type="submit" class="btn-approve">🔑 Setujui & Enkripsi Kunci</button>
                                         </form>
                                     {% else %}
-                                        <span style="color: #cf1322; font-size: 12px;">⚠️ Upload file dulu di Card 1 sebelum menyetujui permintaan!</span>
+                                        <span style="color: #cf1322; font-size: 12px;">⚠️ Upload file dulu di kotak nomor 1 ya!</span>
                                     {% endif %}
                                 {% else %}
-                                    <div style="font-size: 12px; color: #389e0d; font-weight: 600;">
-                                        File dibagikan: <b>{{ req.filename }}</b> — Salin kunci terenkripsi RSA di bawah ini:
+                                    <div style="font-size: 12px; color: #389e0d; font-weight: 600; margin-bottom: 4px;">
+                                        File dibagi: <b>{{ req.filename }}</b>. Salin kunci terenkripsi ini untuk diberikan ke peminta:
                                     </div>
                                     <div class="key-copy-box">
                                         <input type="text" id="key-{{ loop.index }}" value="{{ req.encrypted_key }}" readonly>
@@ -334,7 +325,7 @@
                     {% if not ns.found %}
                         <tr>
                             <td colspan="3" style="text-align: center; color: #888; padding: 20px;">
-                                Belum ada permintaan akses data yang masuk untuk akun <b>{{ current_user | upper }}</b>.
+                                Belum ada permintaan akses masuk untuk akun kamu saat ini.
                             </td>
                         </tr>
                     {% endif %}
@@ -342,28 +333,28 @@
             </table>
         </div>
 
-        <!-- CARD 4: DEKRIPSI FILE BERSAMA -->
+        <!-- CARD 4 -->
         <div class="card full-width accent-orange">
             <div class="card-header">
-                <h3>4. Buka & Dekripsi Dokumen Bersama (Menggunakan Private Key RSA Anda)</h3>
+                <h3>4. Buka Berkas Bersama (Menggunakan Private Key RSA Kamu)</h3>
                 <span class="step-tag orange">RSA PRIVATE KEY DECRYPTION</span>
             </div>
             <form action="/decrypt_shared" method="POST" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 12px; align-items: end;">
                 <div>
-                    <label>Pilih File Terenkripsi (.enc):</label>
+                    <label>Pilih Berkas .enc:</label>
                     <select name="filename" required>
                         {% if files %}
                             {% for f in files %}
                                 <option value="{{ f }}">{{ f }}</option>
                             {% endfor %}
                         {% else %}
-                            <option value="">Belum ada file tersedia</option>
+                            <option value="">Tidak ada berkas tersedia</option>
                         {% endif %}
                     </select>
                 </div>
                 <div>
-                    <label>Tempel (Paste) Kunci Terenkripsi dari Pemilik Data:</label>
-                    <input type="text" name="encrypted_key" placeholder="Paste string Base64 kunci terenkripsi RSA di sini..." required>
+                    <label>Paste Kunci Terenkripsi dari Pemilik File:</label>
+                    <input type="text" name="encrypted_key" placeholder="Tempel string kunci Base64 di sini..." required>
                 </div>
                 <div>
                     <button type="submit" class="btn-primary" style="padding: 10px 22px;">🔓 Dekripsi & Download</button>
@@ -371,17 +362,17 @@
             </form>
         </div>
 
-        <!-- CARD 5: BENCHMARK LOGS -->
+        <!-- CARD 5 -->
         <div class="card full-width">
             <div class="card-header">
-                <h3>5. Log Benchmark Enkripsi Sistem</h3>
-                <span class="step-tag">PERFORMANCE LOG</span>
+                <h3>5. Riwayat Kinerja Enkripsi (Benchmark)</h3>
+                <span class="step-tag">LOG</span>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Nama File</th>
-                        <th>Ukuran (Bytes)</th>
+                        <th>Nama Berkas</th>
+                        <th>Ukuran</th>
                         <th>Algoritma</th>
                         <th>Waktu Eksekusi</th>
                     </tr>
@@ -398,7 +389,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="4" style="text-align: center; color: #888;">Belum ada aktivitas enkripsi pada sesi ini.</td>
+                            <td colspan="4" style="text-align: center; color: #888;">Belum ada catatan uji coba enkripsi.</td>
                         </tr>
                     {% endif %}
                 </tbody>
@@ -413,7 +404,7 @@
             copyText.select();
             copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
-            alert("✅ Kunci simetris terenkripsi RSA berhasil disalin! Silakan kirimkan ke peminta atau paste di bagian Dekripsi.");
+            alert("✨ Kunci berhasil disalin ke clipboard! Silakan dibagikan.");
         }
     </script>
 
